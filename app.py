@@ -2,6 +2,8 @@ from flask import Flask, request, jsonify
 import joblib
 import spacy
 import os
+from sklearn.feature_extraction.text import TfidfVectorizer
+import pandas as pd
 
 # Ensure the model is loaded
 try:
@@ -25,14 +27,16 @@ def clean_text(text):
     tokens = [token.lemma_ for token in doc if not token.is_stop and not token.is_punct]
     return ' '.join(tokens)
 
-def extract_keywords(sentence):
+def extract_keywords(sentence, top_n=5):
     cleaned_sentence = clean_text(sentence)
     vectorized = vectorizer.transform([cleaned_sentence])
     sorted_items = sorted(zip(vectorized.toarray()[0], vectorizer.get_feature_names_out()), reverse=True)
     
     # Filter out keywords with very low scores and remove non-English characters
-    keywords = [item[1] for item in sorted_items if item[0] > 0 and item[1].isalpha()]
-    return keywords
+    keywords = [item[1] for item in sorted_items if item[0] > 0.1 and item[1].isalpha()]
+    
+    # Return only the top_n keywords
+    return keywords[:top_n]
 
 @app.route('/extract_keywords', methods=['POST'])
 def extract_keywords_api():
