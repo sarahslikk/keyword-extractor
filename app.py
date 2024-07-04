@@ -33,7 +33,7 @@ def extract_keywords(sentence, top_n=5):
     sorted_items = sorted(zip(vectorized.toarray()[0], vectorizer.get_feature_names_out()), reverse=True)
     
     # Filter out keywords with very low scores and remove non-English characters
-    keywords = [item[1] for item in sorted_items if item[0] > 0.1 and item[1].isalpha()]
+    keywords = [item[1].capitalize() for item in sorted_items if item[0] > 0.1 and item[1].isalpha()]
     
     # Return only the top_n keywords
     return keywords[:top_n]
