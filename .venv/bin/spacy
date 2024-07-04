@@ -1,5 +1,5 @@
 #!/bin/sh
-'''exec' "/Users/sarahslikkerveer/Desktop/Coding Courses/python nlp proj/keyword-extractor/.venv/bin/python3.11" "$0" "$@"
+'''exec' "/Users/sarahslikkerveer/Desktop/Coding Courses/python nlp proj/keyword-extractor/.venv/bin/python3.12" "$0" "$@"
 ' '''
 # -*- coding: utf-8 -*-
 import re

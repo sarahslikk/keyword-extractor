@@ -12,7 +12,11 @@ except IOError:
     nlp = spacy.load("en_core_web_sm")
 
 # Load the trained vectorizer
-vectorizer = joblib.load('vectorizer.pkl')
+try:
+    vectorizer = joblib.load('vectorizer.pkl')
+except FileNotFoundError:
+    print("Error: The 'vectorizer.pkl' file is not found. Make sure it is included in the project.")
+    exit(1)
 
 app = Flask(__name__)
 
