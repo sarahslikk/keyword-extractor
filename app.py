@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 import joblib
 import spacy
+import os
 
 # Ensure the model is loaded
 try:
@@ -21,17 +22,11 @@ except FileNotFoundError:
 app = Flask(__name__)
 
 def clean_text(text):
-    """
-    Clean the text by lemmatizing and removing stopwords and punctuation.
-    """
     doc = nlp(text)
     tokens = [token.lemma_ for token in doc if not token.is_stop and not token.is_punct]
     return ' '.join(tokens)
 
 def extract_keywords(sentence):
-    """
-    Extract keywords from a single sentence.
-    """
     cleaned_sentence = clean_text(sentence)
     vectorized = vectorizer.transform([cleaned_sentence])
     sorted_items = sorted(zip(vectorized.toarray()[0], vectorizer.get_feature_names_out()), reverse=True)
@@ -40,13 +35,11 @@ def extract_keywords(sentence):
 
 @app.route('/extract_keywords', methods=['POST'])
 def extract_keywords_api():
-    """
-    API endpoint to extract keywords from given sentences.
-    """
     data = request.json
     sentences = data['sentences']
     keywords = [extract_keywords(sentence) for sentence in sentences]
     return jsonify({'keywords': keywords})
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port)
