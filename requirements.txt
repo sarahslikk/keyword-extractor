@@ -2,3 +2,5 @@ Flask
 scikit-learn
 spacy
 joblib
+pandas
+

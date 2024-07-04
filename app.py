@@ -7,7 +7,6 @@ import os
 try:
     nlp = spacy.load("en_core_web_sm")
 except IOError:
-    print("Downloading the spaCy model...")
     from spacy.cli import download
     download("en_core_web_sm")
     nlp = spacy.load("en_core_web_sm")

@@ -1,3 +1,4 @@
+import pandas as pd
 import spacy
 from sklearn.feature_extraction.text import TfidfVectorizer
 import joblib
@@ -13,20 +14,37 @@ def clean_text(text):
     tokens = [token.lemma_ for token in doc if not token.is_stop and not token.is_punct]
     return ' '.join(tokens)
 
-def train_and_save_vectorizer(sentences, filename='vectorizer.pkl'):
+# Load the customer support tickets dataset
+df = pd.read_csv('customer_support_tickets.csv')
+
+# Replace the placeholder {product_purchased} with the actual product names in the Ticket Description
+df['Ticket Description'] = df.apply(lambda row: row['Ticket Description'].replace("{product_purchased}", row['Product Purchased']), axis=1)
+
+# Combine Ticket Description, Ticket Type, and Ticket Subject
+df['combined_text'] = df['Ticket Description'].fillna('') + ' ' + df['Ticket Type'].fillna('') + ' ' + df['Ticket Subject'].fillna('')
+
+# Ensure no null values in the critical columns before processing
+df = df.dropna(subset=['Ticket Description', 'Ticket Type', 'Ticket Subject'])
+
+# Clean the combined text in batches
+batch_size = 1000  # Adjust batch size based on your system's capability
+cleaned_texts = []
+
+for start in range(0, len(df), batch_size):
+    batch_texts = df['combined_text'][start:start + batch_size]
+    cleaned_batch = batch_texts.apply(clean_text)
+    cleaned_texts.extend(cleaned_batch)
+
+df['cleaned_text'] = cleaned_texts
+
+# Train and save the vectorizer
+def train_and_save_vectorizer(data, filename='vectorizer.pkl'):
     """
     Train a TF-IDF vectorizer and save it to a file.
     """
-    cleaned_sentences = [clean_text(sentence) for sentence in sentences]
     vectorizer = TfidfVectorizer(stop_words='english')
-    vectorizer.fit(cleaned_sentences)
+    vectorizer.fit(data)
     joblib.dump(vectorizer, filename)
     print(f"Vectorizer saved to {filename}")
 
-# Example usage
-sentences = [
-    "Machine learning is fascinating and powerful.",
-    "Natural language processing enables computers to understand human language.",
-    "Artificial intelligence is transforming various industries."
-]
-train_and_save_vectorizer(sentences)
+train_and_save_vectorizer(df['cleaned_text'])
