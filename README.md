@@ -9,9 +9,12 @@ In Heroku, you also need a Procfile, and runtime file (the python version, mine 
 The other Javascript files (UI action, and Auto Tagger Script Include) contain the logic you need to actually automatically tag any table which you apply the UI action to. In order to work, you'll need a separate record for the outbound REST message called Keyword Extractor, with one POST method, linked to the keyword extractor API. Below contains the stuff you'll need to put into the REST message record. 
 
 
-Format for calling the api and creating REST message: Example Endpoint: https://myappname.herokuapp.com/extract_keywords (extract_keywords) is the important part, make sure you put that
+Format for calling the api and creating REST message: Example Endpoint: https://myappname.herokuapp.com/extract_keywords (extract_keywords is the important part, make sure you put that)
+
 Method: POST, 
+
 Headers: Content-type application/json, 
+
 Body: { "sentences": ["Example sentence"] }
 
 Response: (parse with JSON) {
