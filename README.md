@@ -13,6 +13,7 @@ Format for calling the api and creating REST message: Example Endpoint: https://
 Method: POST, 
 Headers: Content-type application/json, 
 Body: { "sentences": ["Example sentence"] }
+
 Response: (parse with JSON) {
     "keywords": [
         [
@@ -20,6 +21,7 @@ Response: (parse with JSON) {
         ]
     ]
 }
+
 The body and response is handled in the script, while the Header and Method and Endpoint I configured in the REST Message record, to avoid hardcoding. I'm working to have this API be hosted on AWS Lambda instead, but right now I'm having trouble uploading the files because the python libaries are very large. Once I have it uploaded to Lambda then I will reupload with the REST message record, since AWS Lambda has free API requests up to 1 million requests. 
 
 
