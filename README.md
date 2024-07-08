@@ -1,4 +1,4 @@
-Project for extracting keywords, trained from a customer service dataset.
+Project for extracting keywords, trained from a customer service dataset. Implemented in ServiceNow as a Tag Generator/Automatic Tag Button UI Action using server side script include and REST message. 
 
 This is a project I've been working on to combine my knowledge in data science and machine learning with Servicenow. I first trained a python model with TDIFVectorizer on customer service data I got from Kaggle (file is in the repository). The model still needs tuning, but it performs basic functions of a keywords extractor. I pushed it to an app on Heroku so I could integrate it into Servicenow as an outbound REST Message API, and the extract_keyword function is what actually extracts keywords. 
 
