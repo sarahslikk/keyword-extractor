@@ -6,7 +6,7 @@ I haven't included the REST Message record in this repository because Heroku cos
 
 In Heroku, you also need a Procfile, and runtime file (the python version, mine is 3.12). The training for the model is in train_model.py, which you can add hypertuning parameters to or change however you want. The data I used is in the csv file, I used customer service data specifically because that's the kind of stuff you'd see in Servicenow in incidents, etc. 
 
-The other Javascript files (UI action, and Auto Tagger Script Include) contain the logic you need to actually automatically tag any table which you apply the UI action to. In order to work, you'll need a separate record for the outbound REST message called Keyword Extractor, with one POST method, linked to the keyword extractor API. Below contains the stuff you'll need to put into the REST message record. 
+The other Javascript files (UI action, and Auto Tagger Script Include) contain the logic you need to actually automatically tag any table which you apply the UI action to. I set it up for the Incident and Knowledge table, if you want to tag a different table you may need to change the field names in the UI action by using the current object (current.fieldname). In order to work, you'll need a separate record for the outbound REST message called Keyword Extractor, with one POST method, linked to the keyword extractor API. Below contains the stuff you'll need to put into the REST message record. 
 
 
 Format for calling the api and creating REST message: Example Endpoint: https://myappname.herokuapp.com/extract_keywords (extract_keywords is the important part, make sure you put that)
